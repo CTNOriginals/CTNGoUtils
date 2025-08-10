@@ -43,6 +43,12 @@ func ToStringFunc[K comparable, V any](obj map[K]V, stringConvert func(val V) st
 	return fmt.Sprintf("%T {\n %s\n}", obj, strings.Join(lines, "\n "))
 }
 
-func ToString[K comparable, V fmt.Stringer](obj map[K]V) string {
+func ToString[K comparable, V string](obj map[K]V) string {
+	return ToStringFunc(obj, func(v V) string {
+		return string(v)
+	})
+}
+
+func ToStringer[K comparable, V fmt.Stringer](obj map[K]V) string {
 	return ToStringFunc(obj, V.String)
 }
