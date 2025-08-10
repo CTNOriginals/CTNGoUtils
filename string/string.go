@@ -46,13 +46,13 @@ func Indent(str string, amount int, char string) string {
 
 // Gets the first possible range of characters that that are contained in valid
 //
-// The return values make up the index range of the substring heystack[start:end].
+// The return values make up the index range of the substring haysteck[start:end].
 // If start and end both return 0, there was no match
-func GetValidRange(heystack string, valid string, startIndex int) (start int, end int) {
+func GetValidRange(haysteck string, valid string, startIndex int) (start int, end int) {
 	start = -1
 
-	for i := startIndex; i < len(heystack); i++ {
-		var char = rune(heystack[i])
+	for i := startIndex; i < len(haysteck); i++ {
+		var char = rune(haysteck[i])
 
 		if start == -1 && strings.ContainsRune(valid, char) {
 			start = i
@@ -65,11 +65,11 @@ func GetValidRange(heystack string, valid string, startIndex int) (start int, en
 		return 0, 0
 	}
 
-	return start, len(heystack) //? Dont substract 1 to account for slices end range non-inclusivity
+	return start, len(haysteck) //? Dont substract 1 to account for slices end range non-inclusivity
 }
 
 // Checks if all characters contained in haystack are also listed in valid.
-func Validate(heystack string, valid string) bool {
-	start, end := GetValidRange(heystack, valid, 0)
-	return start == 0 && end == len(heystack)
+func Validate(haysteck string, valid string) bool {
+	start, end := GetValidRange(haysteck, valid, 0)
+	return start == 0 && end == len(haysteck)
 }

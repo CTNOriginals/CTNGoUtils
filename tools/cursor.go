@@ -39,7 +39,7 @@ func (this Cursor[T]) IsEnd() bool {
 	return len(this.Content) == 0
 }
 
-// Peek the current item the cursor is on without consumingit.
+// Peek the current item the cursor is on without consuming it.
 func (this Cursor[T]) Peek() T {
 	return this.Content[len(this.Content)-1]
 }
@@ -57,7 +57,7 @@ func (this Cursor[T]) CurrentIndex() int {
 
 //#endregion
 
-// Consume the current item, effectively setting the contents length to -1 of its current lengt.
+// Consume the current item, effectively setting the contents length to -1 of its current length.
 func (this *Cursor[T]) Consume() {
 	this.Content = this.Content[:len(this.Content)-1]
 }

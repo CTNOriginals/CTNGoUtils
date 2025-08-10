@@ -1,4 +1,4 @@
-package constents
+package constants
 
 import (
 	"path/filepath"
@@ -10,8 +10,8 @@ import (
 const (
 	Alphabet            = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	Numbers             = "1234567890"
-	AlphaNumaric        = Alphabet + Numbers
-	WordCharacters      = AlphaNumaric + "_"
+	AlphaNumeric        = Alphabet + Numbers
+	WordCharacters      = AlphaNumeric + "_"
 	FileNameCharacters  = WordCharacters + " -."
 	DirectoryCharacters = FileNameCharacters + "/\\"
 )
