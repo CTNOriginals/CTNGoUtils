@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/CTNOriginals/CTNGoUtils/constants"
-	cstring "github.com/CTNOriginals/CTNGoUtils/string"
-	cstruct "github.com/CTNOriginals/CTNGoUtils/struct"
+	"github.com/CTNOriginals/CTNGoUtils/v2/constants"
+	cstring "github.com/CTNOriginals/CTNGoUtils/v2/string"
+	cstruct "github.com/CTNOriginals/CTNGoUtils/v2/struct"
 )
 
 type ParsedFilePath struct {
