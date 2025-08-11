@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"slices"
 
-	cstring "github.com/CTNOriginals/CTNGoUtils/string"
-	cstruct "github.com/CTNOriginals/CTNGoUtils/struct"
+	cstring "github.com/CTNOriginals/CTNGoUtils/v2/string"
+	cstruct "github.com/CTNOriginals/CTNGoUtils/v2/struct"
 )
 
 type Cursor[T comparable] struct {

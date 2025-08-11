@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	cstring "github.com/CTNOriginals/CTNGoUtils/string"
+	cstring "github.com/CTNOriginals/CTNGoUtils/v2/string"
 )
 
 func Splice[T comparable](slice []T, start int, count int) (remaining []T, deleted []T) {
