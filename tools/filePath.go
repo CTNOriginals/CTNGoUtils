@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/CTNOriginals/CTNGoUtils/constents"
+	"github.com/CTNOriginals/CTNGoUtils/constants"
 	cstring "github.com/CTNOriginals/CTNGoUtils/string"
 	cstruct "github.com/CTNOriginals/CTNGoUtils/struct"
 )
@@ -62,7 +62,7 @@ func ParseFilePath(path string) ParsedFilePath {
 
 	//#region File
 	var file = obj.Split[len(obj.Split)-1]
-	rStart, rEnd := cstring.GetValidRange(file, constents.FileNameCharacters, 0)
+	rStart, rEnd := cstring.GetValidRange(file, constants.FileNameCharacters, 0)
 
 	if rStart+rEnd == 0 {
 		panic(fmt.Sprintf("Invalid file '%s'", file))
@@ -78,7 +78,7 @@ func ParseFilePath(path string) ParsedFilePath {
 		obj.Name = strings.Join(fileSplit[:len(fileSplit)-1], ".")
 
 		var trail = fileSplit[len(fileSplit)-1]
-		rStart, rEnd := cstring.GetValidRange(trail, constents.AlphaNumaric, 0)
+		rStart, rEnd := cstring.GetValidRange(trail, constants.AlphaNumeric, 0)
 
 		if rStart+rEnd > 0 {
 			obj.Ext = trail[rStart:rEnd]
@@ -92,7 +92,7 @@ func ParseFilePath(path string) ParsedFilePath {
 	//#region Line + Colmn
 	//- Make sure there is nothing between the extension and the colon before the line number
 	if len(obj.Trail) > 0 && rune(obj.Trail[0]) == ':' {
-		rStart, rEnd := cstring.GetValidRange(obj.Trail, constents.Numbers+":", 1)
+		rStart, rEnd := cstring.GetValidRange(obj.Trail, constants.Numbers+":", 1)
 		if rStart+rEnd > 0 {
 			var loc = obj.Trail[rStart:rEnd]
 			var locSplit = strings.Split(loc, ":")
