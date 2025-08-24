@@ -73,3 +73,27 @@ func Validate(haysteck string, valid string) bool {
 	start, end := GetValidRange(haysteck, valid, 0)
 	return start == 0 && end == len(haysteck)
 }
+
+// Creates padding between each item of the string.
+// Each part of the string will not exceed the ammount of space assigned to it.
+//
+// parts is the parts of the string to space out.
+// padding is an array of ints that specify for each part how much space it can take up.
+//
+// so parts[2] can take up a maximum of padding[2] spaces.
+//
+// If the part exceeds the amount of padding it was assigned,
+// it will just take as much space as it needs and the next part will follow right after
+//
+// If the amount of parts exceed the ammount of padding entries,
+// the last padding entry will be used for the remaining parts
+func Padding(parts []string, padding []int) (out string) {
+	for i, part := range parts {
+		var pad = padding[min(i, len(padding)-1)]
+		var remaining = max(pad-len(part), 0)
+
+		out += part + Repeat(" ", remaining)
+	}
+
+	return out
+}
