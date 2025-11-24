@@ -3,7 +3,6 @@
 package file
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -71,7 +70,7 @@ func WriteFile(path string, lines []string) {
 	//? Make destination dir to make sure it exists
 	_ = os.MkdirAll(filePath.Path, 0666)
 
-	file, err := os.Create(fmt.Sprintf("%s/%s.mlog", filePath.Path, filePath.Name))
+	file, err := os.Create(filePath.Full)
 	if err != nil {
 		log.Fatal(err)
 	}
