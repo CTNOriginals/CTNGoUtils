@@ -1,4 +1,4 @@
-package cstring
+package ctnstring
 
 import (
 	"fmt"

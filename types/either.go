@@ -1,4 +1,4 @@
-package ctype
+package ctntype
 
 type Either[A, B any] struct {
 	value any

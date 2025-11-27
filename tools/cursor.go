@@ -1,11 +1,11 @@
-package tools
+package ctntools
 
 import (
 	"fmt"
 	"slices"
 
-	cstring "github.com/CTNOriginals/CTNGoUtils/v2/string"
-	cstruct "github.com/CTNOriginals/CTNGoUtils/v2/struct"
+	ctnstring "github.com/CTNOriginals/CTNGoUtils/v2/string"
+	ctnstruct "github.com/CTNOriginals/CTNGoUtils/v2/struct"
 )
 
 type Cursor[T comparable] struct {
@@ -29,7 +29,7 @@ func NewCursor[T comparable](content *[]T) Cursor[T] {
 
 // #region Getters
 func (this Cursor[T]) String() string {
-	return fmt.Sprintf("Cursor[%T] {\n%s\n}", *this.Original, cstring.Indent(cstruct.ToString(this), 1, " "))
+	return fmt.Sprintf("Cursor[%T] {\n%s\n}", *this.Original, ctnstring.Indent(ctnstruct.ToString(this), 1, " "))
 }
 
 func (this Cursor[T]) IsStart() bool {

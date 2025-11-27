@@ -1,14 +1,14 @@
 // File content initially sourced from: https://github.com/CTNOriginals/conveycode/blob/905686b884afca3598e8993df9fd90c29c0d8e52/compiler/utils/file.go
 
-package file
+package ctnfile
 
 import (
 	"log"
 	"os"
 	"strings"
 
-	"github.com/CTNOriginals/CTNGoUtils/v2/constants"
-	cstring "github.com/CTNOriginals/CTNGoUtils/v2/string"
+	ctnconstants "github.com/CTNOriginals/CTNGoUtils/v2/constants"
+	ctnstring "github.com/CTNOriginals/CTNGoUtils/v2/string"
 )
 
 // Parses the file path and returns just the file name without the extension
@@ -42,11 +42,11 @@ func PathExists(path string) bool {
 }
 
 func IsValidFileName(name string) bool {
-	return cstring.Validate(name, constants.FileNameCharacters)
+	return ctnstring.Validate(name, ctnconstants.FileNameCharacters)
 }
 
 func IsValidDirectoryPath(path string) bool {
-	return cstring.Validate(path, constants.DirectoryCharacters)
+	return ctnstring.Validate(path, ctnconstants.DirectoryCharacters)
 }
 
 func GetFileRunes(filePath string) []rune {

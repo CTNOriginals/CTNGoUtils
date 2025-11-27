@@ -1,6 +1,4 @@
-package cstruct
-
-//TODO make a public utils package and put this in there so that i dont copy+paste this all the time...
+package ctnstruct
 
 import (
 	"fmt"

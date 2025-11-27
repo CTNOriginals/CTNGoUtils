@@ -1,4 +1,4 @@
-package cmap
+package ctnmap
 
 import (
 	"fmt"

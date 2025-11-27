@@ -1,10 +1,10 @@
-package cslice
+package ctnslice
 
 import (
 	"fmt"
 	"strings"
 
-	cstring "github.com/CTNOriginals/CTNGoUtils/v2/string"
+	ctnstring "github.com/CTNOriginals/CTNGoUtils/v2/string"
 )
 
 func Splice[T comparable](slice []T, start int, count int) (remaining []T, deleted []T) {
@@ -42,10 +42,10 @@ func ToString[T interface{ fmt.Stringer }](slice []T, withIndexes bool) string {
 
 		if len(lines) > 1 {
 			str = lines[0] + "\n"
-			str += cstring.Indent(strings.Join(lines[1:], "\n"), 1, " ")
+			str += ctnstring.Indent(strings.Join(lines[1:], "\n"), 1, " ")
 		}
 
-		str = cstring.Indent(str, 1, " ")
+		str = ctnstring.Indent(str, 1, " ")
 		items = append(items, str)
 	}
 
