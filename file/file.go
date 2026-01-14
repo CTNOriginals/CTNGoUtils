@@ -49,15 +49,21 @@ func IsValidDirectoryPath(path string) bool {
 	return ctnstring.Validate(path, ctnconstants.DirectoryCharacters)
 }
 
-func GetFileRunes(filePath string) []rune {
-	b, err := os.ReadFile(filePath)
+func GetFileBytes(filePath string) []byte {
+	content, err := os.ReadFile(filePath)
+
 	if err != nil {
 		panic(err)
 	}
 
-	ret := make([]rune, len(b))
+	return content
+}
 
-	for i, r := range b {
+func GetFileRunes(filePath string) []rune {
+	content := GetFileBytes(filePath)
+	ret := make([]rune, len(content))
+
+	for i, r := range content {
 		ret[i] = rune(r)
 	}
 
