@@ -80,13 +80,14 @@ commit-message:
 
 
 # -- Project --
-.PHONY: run tmp
+.PHONY: run test
 
 # requires wgo: https://github.com/bokwoon95/wgo
 run:
 	wgo run ./tests/main.go
 
-
+test:
+	wgo -file .go go test -v ./...
 
 # -- Release --
 .PHONY: version-update patch minor major
