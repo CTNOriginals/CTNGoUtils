@@ -1,4 +1,5 @@
 # Makefile template: https://gist.github.com/grihabor/4a750b9d82c9aa55d5276bd5503829be
+# source: https://github.com/CTNOriginals/BitburnerGoFilesync/blob/development/Makefile
 
 MAKE               := make --no-print-directory
 
@@ -29,78 +30,76 @@ CURRENT_VERSION_MINOR := $(MAJOR).$(NEXT_MINOR).0
 CURRENT_VERSION_MAJOR := $(NEXT_MAJOR).0.0
 endif
 
-DATE                = $(shell date +'%d.%m.%Y')
-TIME                = $(shell date +'%H:%M:%S')
-COMMIT             := $(shell git rev-parse HEAD)
-AUTHOR             := $(firstword $(subst @, ,$(shell git show --format="%aE" $(COMMIT))))
-BRANCH_NAME        := $(shell git rev-parse --abbrev-ref HEAD)
-
-TAG_MESSAGE         = "$(TIME) $(DATE) $(AUTHOR) $(BRANCH_NAME)"
-COMMIT_MESSAGE     := $(shell git log --format=%B -n 1 $(COMMIT))
-
-CURRENT_TAG_PATCH  := "v$(CURRENT_VERSION_PATCH)"
-CURRENT_TAG_MINOR  := "v$(CURRENT_VERSION_MINOR)"
-CURRENT_TAG_MAJOR  := "v$(CURRENT_VERSION_MAJOR)"
-
+.DEFAULT_GOAL := help
 # --- Version commands ---
-.PHONY: version version-patch version-minor version-majo
+.PHONY: help list version
 
-version:
-	@$(MAKE) version-patch
+help: ##@help Display all commands and descriptions
+	@awk 'BEGIN {FS = ":.*##@"; printf "\nUsage:\n  make <target>\n"} \
+	/^[.a-zA-Z_-]+:.*?##@/ { \
+		split($$2, parts, " "); \
+		section = parts[1]; \
+		description = substr($$2, length(section) + 2); \
+		sections[section] = sections[section] sprintf("  \033[36m%-15s\033[0m %s\n", $$1, description); \
+	} \
+	END { \
+		for (section in sections) { \
+			printf "\n\033[1m%s\033[0m\n", section; \
+			printf "%s", sections[section]; \
+		} \
+	}' $(MAKEFILE_LIST)
 
-version-patch:
-	@echo "$(CURRENT_VERSION_PATCH)"
+list: ##@help List all targets and their commands
+	@awk 'BEGIN { \
+		target = ""; cmds = ""; \
+	} \
+	/^[.a-zA-Z_-]+:/ && !/^\.PHONY/ { \
+		if (target != "" && cmds != "") { \
+			printf "  \033[36m%-15s\033[0m\n%s\n", target, cmds; \
+		} \
+		split($$0, a, ":"); \
+		target = (a[1] == "help" || a[1] == "list") ? "" : a[1]; \
+		cmds = ""; \
+	} \
+	/^\t/ && target != "" { \
+		cmds = cmds "    " substr($$0, 2) "\n"; \
+	} \
+	END { \
+		if (target != "" && cmds != "") { \
+			printf "  \033[36m%-15s\033[0m\n%s\n", target, cmds; \
+		} \
+	}' $(MAKEFILE_LIST)
 
-version-minor:
-	@echo "$(CURRENT_VERSION_MINOR)"
+version: ##@help Log the current version
+	@echo "v$(CURRENT_VERSION_PATCH)"
 
-version-major:
-	@echo "$(CURRENT_VERSION_MAJOR)"
+# -- Run --
+.PHONY: run test wrun
 
-# --- Tag commands ---
-.PHONY: tag-patch tag-minor tag-major
+WGO_INCLUDE := -file .go -file .toml
 
-tag-patch:
-	@echo "$(CURRENT_TAG_PATCH)"
+run: ##@run Run normally. Pass arguments like so: args="arg1 arg2 ...".
+	go run ./tests/main.go $(args)
 
-tag-minor:
-	@echo "$(CURRENT_TAG_MINOR)"
+test: ##@run go test.
+	go test -v ./...
 
-tag-major:
-	@echo "$(CURRENT_TAG_MAJOR)"
-
-# -- Meta info ---
-.PHONY: tag-message commit-message
-
-tag-message:
-	@echo "$(TAG_MESSAGE)"
-
-commit-message:
-	@echo "$(COMMIT_MESSAGE)"
-
-
-# -- Project --
-.PHONY: run tmp
-
-# requires wgo: https://github.com/bokwoon95/wgo
-run:
-	wgo run ./tests/main.go
-
-
+wrun: ##@run Run a make target and restart on file change. make wrun <wgoargs="args..."> target=[TARGET]. Requires wgo: https://github.com/bokwoon95/wgo
+	wgo $(WGO_INCLUDE) $(wgoargs) $(MAKE) $(target)
+wrunstdin: ##@run Run a make wrun with wgoargs -stdin.
+	$(MAKE) wrun wgoargs="-stdin $(wgoargs)" target="$(target)"
 
 # -- Release --
-.PHONY: version-update patch minor major
+.PHONY: tag patch minor major
 
-version-update:
-	git tag "v$(VERS)"
+tag: ##@versioning Push tags
 	git push --tags
 
-patch:
-	$(MAKE) version-update VERS=$(MAJOR).$(MINOR).$(NEXT_PATCH)
+patch: ##@versioning Create and add a patch tag (vx.x.+commits)
+	git tag "v$(MAJOR).$(MINOR).$(NEXT_PATCH)"
 
-minor:
-	$(MAKE) version-update VERS=$(MAJOR).$(NEXT_MINOR).0
+minor: ##@versioning Create and add a minor tag (vx.+1.x)
+	git tag "v$(MAJOR).$(NEXT_MINOR).0"
 
-major:
-	$(MAKE) version-update VERS=$(NEXT_MAJOR).0.0
-
+major: ##@versioning Create and add a major tag (v+1.x.x)
+	git tag "v$(NEXT_MAJOR).0.0"
