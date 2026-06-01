@@ -3,6 +3,8 @@
 package ctnfile
 
 import (
+	"bufio"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -60,14 +62,36 @@ func GetFileBytes(filePath string) []byte {
 }
 
 func GetFileRunes(filePath string) []rune {
-	content := GetFileBytes(filePath)
-	ret := make([]rune, len(content))
-
-	for i, r := range content {
-		ret[i] = rune(r)
+	// Open the file located at the given file path
+	var file, err = os.Open(filePath)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	return ret
+	// Ensure the file is closed when the main function exits
+	defer file.Close()
+
+	// Initialize a new buffered reader to improve read efficiency
+	var reader = bufio.NewReader(file)
+	var content = make([]rune, 0)
+
+	for {
+		// Read a single UTF-8 encoded Unicode character
+		var char, _, err = reader.ReadRune()
+
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				log.Fatal(err)
+			}
+		}
+
+		// fmt.Printf("Read rune: %q, size: %d bytes\n", char, size)
+		content = append(content, char)
+	}
+
+	return content
 }
 
 func WriteFile(path string, lines []string) {
