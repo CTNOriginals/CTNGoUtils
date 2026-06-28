@@ -24,7 +24,7 @@ func Values(obj any) (vals []any) {
 	vals = make([]any, length)
 
 	for i := range length {
-		vals[i] = val.Field(i)
+		vals[i] = val.Field(i).Interface()
 	}
 
 	return vals
