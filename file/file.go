@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	ctnconstants "github.com/CTNOriginals/CTNGoUtils/v2/constants"
@@ -26,6 +27,40 @@ func GetFileName(filePath string) string {
 	file := parts[len(parts)-1]
 	split := strings.Split(file, ".")
 	return strings.Join(split[:len(split)-1], ".")
+}
+
+// Validate path to be correct and an existing file path on this machine.
+// If path is not already absolute, relative will be joined with path and cleaned.
+//
+// It will always return validPath, even if err != nil.
+// If an error is returned, validPath will contain the path at the point of the error.
+//
+// If no validateError is returned, validPath is an absolute path to a file or directory that exists.
+func ValidateFilePath(relative string, path string) (validPath string, validateError error) {
+	var fileExists = func() error {
+		var _, err = os.Stat(path)
+		return err
+	}
+
+	if filepath.IsAbs(path) {
+		return path, fileExists()
+	}
+
+	path = filepath.Clean(filepath.Join(relative, path))
+
+	if filepath.IsAbs(path) {
+		return path, fileExists()
+	}
+
+	var abspath, err = filepath.Abs(path)
+
+	if err != nil {
+		return path, err
+	}
+
+	path = abspath
+
+	return path, fileExists()
 }
 
 func FileExists(filePath string) bool {
