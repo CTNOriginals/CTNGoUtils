@@ -46,7 +46,7 @@ func ValidateFilePath(relative string, path string) (validPath string, validateE
 		return path, fileExists()
 	}
 
-	path = filepath.Clean(filepath.Join(relative, path))
+	path = filepath.Join(relative, path)
 
 	if filepath.IsAbs(path) {
 		return path, fileExists()
