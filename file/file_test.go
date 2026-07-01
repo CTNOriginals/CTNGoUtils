@@ -5,6 +5,32 @@ import (
 	"testing"
 )
 
+// TODO: finish this test
+func TestValidateFilePath(t *testing.T) {
+	// var tmpdir = os.TempDir()
+	// var tmpfile, err = os.CreateTemp(tmpdir, "TestValidateFilePath")
+	// defer func() {
+	// 	tmpfile.Close()
+	// 	os.Remove(tmpfile.Name())
+	// }()
+	//
+	// if err != nil {
+	// 	t.Errorf("Unable to create tmp file: %v", err)
+	// }
+	//
+	// var tests = []struct{
+	// 	Path string
+	// 	Expect struct{
+	// 		Path string
+	// 		Err error
+	// 	}
+	// }{
+	// 	{
+	// 		Path: filepath.Join("/tmp", tmpdir)
+	// 	},
+	// }
+}
+
 func TestGetFileRunes(t *testing.T) {
 	var tmpdir = os.TempDir()
 	var tmpfile, err = os.CreateTemp(tmpdir, "TestGetFileRunes")
